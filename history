@@ -51,6 +51,9 @@ Du hittar den docker poken inne på docker hub -> gå in till account settings -
 ## inne på "todo-deployment.yaml" 
 - ändra namnet på image till ditt eget namn
 
-
-
+## öppna ett nytt terminalfönster i dockerfile filen och skriv
+- docker build -t carro92/todoapp .
+- docker images // för att se din docker_id (2e6dde38cd85)
+- docker tag 2e6dde38cd85 carro92/todoapp
+- docker push carro92/todoapp:latest
 
