@@ -44,5 +44,5 @@ jobs:
         git config --global user.email "github-actions@github.com"
         git add ToDoApp-K8S-Manifests/todo-deployment.yaml
         git commit -m "Update webapp image to ${{ github.sha }}"
+        git pull origin main --rebase  # Hämta och integrera ändringar från fjärrrepot
         git push
-  
