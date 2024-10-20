@@ -1,0 +1,56 @@
+## inne på powershell skriv
+- $version = (Invoke-RestMethod https://api.github.com/repos/argoproj/argo-cd/releases/latest).tag_name
+Write-Host "Den senaste versionen av ArgoCD är: $version"
+ för att få den senaste versionen
+
+ ## skriv sedan
+ - $url = "https://github.com/argoproj/argo-cd/releases/download/" + $version + "/argocd-windows-amd64.exe"
+$output = "argocd.exe"
+
+Invoke-WebRequest -Uri $url -OutFile $output
+
+## För att se om det är installerat 
+- argocd version
+
+## Gå in på vs code och skriv
+- kubectl config use-context docker-desktop
+
+- kubectl create namespace argocd
+
+- kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+## Gå till powershell och skriv in för att logga in CLI
+-kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+## Gå in på webbläsaren och skriv in
+- localhost:8080 så kommer du till en inloggnings sida
+- Användarnamn: admin
+för att hitta lösenordet öppna en ny powershell och skriv in
+- argocd admin initial-password -n argocd (fPElsQYYGlYQ-04E)
+
+## Öppna ett terminal fönster och klona lars repo
+- cd /c/Users/The_C/Desktop/skola
+- git clone https://github.com/larsappel/ArgoCD.git
+- cd ArgoCD
+- ls -la för att se vad som ligger där och nu ska du ta bort .git mappen
+- rm -rf .git
+- git init
+- git remote add origin https://github.com/carro92/argocd.git
+- git add .
+- git commit -m "first commit"
+- git push
+
+## Gå in på githubs hemsida  och gå in på detta repo
+- gå till settings och sedan secrets and variables -> action -> new repository secret
+- där ska du fylla i inlogg till dockerhub och döp dom till samma som det står i lars repo under "build-push-images.yaml" lösenordet är en accect poken på dockerhub.
+Du hittar den docker poken inne på docker hub -> gå in till account settings -> personal access tokens -> generete new token -> Välj read,write,delete och döp den till argocd
+
+- Gå sedan till actions -> general 
+- Du måste ändra "Workflow permissions" till "Read and write permissions"
+
+## inne på "todo-deployment.yaml" 
+- ändra namnet på image till ditt eget namn
+
+
+
+
