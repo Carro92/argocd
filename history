@@ -39,6 +39,7 @@ för att hitta lösenordet öppna en ny powershell och skriv in
 - git add .
 - git commit -m "first commit"
 - git push
+- Glöm inte att ha repot publikt
 
 ## Gå in på githubs hemsida  och gå in på detta repo
 - gå till settings och sedan secrets and variables -> action -> new repository secret
@@ -57,3 +58,22 @@ Du hittar den docker poken inne på docker hub -> gå in till account settings -
 - docker tag 2e6dde38cd85 carro92/todoapp
 - docker push carro92/todoapp:latest
 
+## Gå nu in på hemsidan argocd och logga in 
+- gå in på "applications" och sedan "new application"
+- general
+- application name: todoapp
+- project: default
+- sync policy: automatic
+kryssa i båda rutorna *prune resources* och *self heal*
+- sync options: kryssa i *auto-create namespace*
+- Gå nu till Github och gå till *code* -> kopiera git repot https länk
+- Gå tillbaka till argocd och klistra in länken i *source* 
+- Gå tillbaka till github ditt repo *argocd* och kolla vad manifests heter. Kopiera det namnet.
+- Gå till argo och klistra in namnet i *path* glöm inte att skriva med ./ också (./ToDoApp-K8S-Manifests)
+- destination: *cluster url* välj den som dyker upp och sen *namespace* väljer du ett namn vad som helst ex todoapp
+- Tryck sedan på *create*  // Det den gör är att den går till github repot hämtar manifests och kör det.
+- Om du går trycker på appen på argo så kan du se vad som händer och om det är något som inte stämmer
+
+## Gå in på din lens och gå till docker-desktop och kolla om todoapp är där Du kan behöva ändra default till todoapp så dyker allt upp
+
+## gå in på argo och tryck på todoapp och sedan *sync* och sedan *refresh* så ser du vad som händer
