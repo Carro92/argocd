@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: todo-container
-        image: carro92/todoapp:52df472739238e65656b25aafc03c99e8e768ef7
+        image: carro92/todoapp:f7dc85e65b82efb74faf94eb81e500042b02ba87
         ports:
         - containerPort: 80
         envFrom: 
