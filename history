@@ -161,9 +161,8 @@ path: ./ToDoApp-K8S-Manifests (viktigt att inte glömma ./ före namnet)
 - Gå till lens -> *workloads* -> *overview* och ändra i rutan till *todoapp* och om allt är grönt så funkar det
 - Gå till google cloud -> *workloads* och då ser du att det finns en fil som heter todoapp
 
-## För att installera ingress controller
-- öppna powershell och skriv 
-- kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+
 
 ## skapa en ingress resource för applikationen
 - Gå in på vs code och lägg till en ny fil som heter *todoapp-ingress.yaml* i mappen *ToDoApp-K8S-Manifests* och skriv in detta:
