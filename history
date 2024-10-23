@@ -41,6 +41,14 @@ för att hitta lösenordet öppna en ny powershell och skriv in
 - git push
 - Glöm inte att ha repot publikt
 
+## Det som finns i den klonade git repot är
+- Todoapp // Som man jobbar med
+- Manifesten // Som lägger in den i det kubic clustret
+- Dockerfile // Som bygger en image
+- nginx.conf // Som är en config fil för nginx / mer en manifest fil
+- build-push-images.yaml // Som bygger och pushar images 
+- github-actions.yaml // Som är en action för att bygga och pusha images. Där har du även secret som du måste skapa i githubs hemsida för att kunna pusha till dockerhub
+
 ## Gå in på githubs hemsida  och gå in på detta repo
 - gå till settings och sedan secrets and variables -> action -> new repository secret
 - där ska du fylla i inlogg till dockerhub och döp dom till samma som det står i lars repo under "build-push-images.yaml" lösenordet är en accect poken på dockerhub.
@@ -75,5 +83,83 @@ kryssa i båda rutorna *prune resources* och *self heal*
 - Om du går trycker på appen på argo så kan du se vad som händer och om det är något som inte stämmer
 
 ## Gå in på din lens och gå till docker-desktop och kolla om todoapp är där Du kan behöva ändra default till todoapp så dyker allt upp
+- Är det så att det är någonting som inte funkar så testa att gå in på vs code ./ToDoApp/Pages/Index.cshtml och ändra något och pusha upp det igen 
+- Gå sedan in på argo och se om det går att köra utan problem och då ser du även i lens att allt är grönt och klart
 
-## gå in på argo och tryck på todoapp och sedan *sync* och sedan *refresh* så ser du vad som händer
+## gå in på lens
+- gå in på docker-desktop och sedan på todoapp
+- gå in på *network* och sedan *service* och tryck på din *todo-service* skrolla ner till ports och tryck på nummerna som är blå så 
+kommer du till en localhost sida på internet
+
+## Skapa ett cluster på google cloud
+- logga in på google cloud och gå till *kubernetes engine* och sedan *cluster* -> *create cluster*
+- fyll i 
+- cluster name: autopilot-cluster-1 // valfritt
+- region: europe-north1
+- create
+- Gå in på cluster och tryck på *connect* och kopiera det som står där (gcloud container clusters get-credentials autopilot-cluster-1 --region europe-north1 --project seraphic-gizmo-434512-v9)
+- Gå in på windows powershell och skriv in det som du kopierade // skriv koden
+
+
+- Gå in på lens och ändra ifrån *docker-desktop* till den som börjar med *gke* och tryck på *connect*
+
+## inne på lens skapa ett namespace
+- gå in på *namespaces* och tryck på *create namespace* ett *+* tecken i negre höger sida
+- fyll i namnet på namespace (argocd) och tryck på *create*
+
+## installera argocd med helm
+- inne på lens
+- gå in på *helm* och tryck på *charts*
+- sök efter *argocd* och tryck på *install*
+- fyll i namespace (argocd) och tryck på *install*
+
+## inne på lens för att se om det funkar
+- Gå till *workloads* -> *overview* och och ändra i rutan till argocd och lyser allt grönt så funkar det
+- Skulle det vara så att det inte funkar så kan du gå in på *google cloud* -> *workloads* och testa att göra en *refresh* och sedan *redeploy* och se om det funkar
+
+## För att koppla oss mot argocd servern gå in på lens
+- Gå till *network* -> *service* och tryck på *argocd-server* och sedan *ports* och tryck på nummerna som är blå (den översta av dem) i rutan där det står "local ports och hitta på en annan port tex 8089" så kommer du till en localhost sida på internet
+
+## För att logga in på argocd som du blev skickad till
+- Användarnamn: admin
+- Lösenord: Kommer du inte ihåg vad det va så kan du gå in på lens och gå till:
+*Config* -> *secrets* -> *argocd-secret* -> *data* och där står lösenordet. (Glöm inte att det står ett annat lösenord så för att få rätt så måste du trycka på ögat till höger för att se ditt riktiga lösenord)
+- Kopiera det lösenordet och skriv in det inne på argocd sidan och då blir du inloggad
+
+## Skapa applikation i argocd
+- Tryck på *+ new app* och fyll i:
+- Application name: nginix (valfritt)
+- Project: default
+- Sync policy: automatic
+- Kryssa i *prune resources* och *self heal*
+- Sync options: kryssa i *auto-create namespace*
+- Source: repository url: (hämtar du ifrån github inne på ditt repo och kopierar länken)
+path: ./nginx (viktigt att inte glömma ./ före namnet)
+- Destination: cluster url: välj den som dyker upp och sedan namespace: välj ett namn (ex nginx)
+- Tryck på *create* 
+
+## För att se om det funkar
+- Gå till lens -> *workloads* -> *overview* och ändra i rutan till *nginx* och om allt är grönt så funkar det
+- Gå till google cloud -> *workloads* och då ser du att det finns en fil som heter my-nginx 
+
+## För att testa gå in på nginx sidan
+- Gå in på lens -> *network* -> *service* och tryck på *my-nginx* och sedan *ports* och tryck på nummerna som är blå och hitta på en annan port tex 8095 så kommer du till en localhost sida på internet
+
+## Skapa en ny applikation i argocd
+- Gå in på argocd och tryck på *+ new app* och fyll i:
+- Application name: todoapp
+- Project: default
+- Sync policy: automatic
+- Kryssa i *prune resources* och *self heal*
+- Sync options: kryssa i *auto-create namespace*
+- Source: repository url: (hämtar du ifrån github inne på ditt repo och kopierar länken)
+path: ./ToDoApp-K8S-Manifests (viktigt att inte glömma ./ före namnet)
+- Destination: cluster url: välj den som dyker upp och sedan namespace: välj ett namn (ex todoapp)
+- Tryck på *create*
+
+## För att se om det funkar
+- Gå till lens -> *workloads* -> *overview* och ändra i rutan till *todoapp* och om allt är grönt så funkar det
+- Gå till google cloud -> *workloads* och då ser du att det finns en fil som heter todoapp
+
+## För att testa gå in på todoapp sidan
+- Gå in på lens -> *network* -> *service* och tryck på *todo-service* och sedan *ports* och tryck på nummerna som är blå och hitta på en annan port tex 8096 så kommer du till en localhost sida på internet
