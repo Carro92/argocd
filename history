@@ -162,26 +162,4 @@ path: ./ToDoApp-K8S-Manifests (viktigt att inte glömma ./ före namnet)
 - Gå till google cloud -> *workloads* och då ser du att det finns en fil som heter todoapp
 
 
-
-
-## skapa en ingress resource för applikationen
-- Gå in på vs code och lägg till en ny fil som heter *todoapp-ingress.yaml* i mappen *ToDoApp-K8S-Manifests* och skriv in detta:
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: todoapp-ingress
-  namespace: todoapp
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  rules:
-  - host: todoapp.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: todo-service
-            port:
-              number: 80
+___________________________________________________________________
